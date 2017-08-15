@@ -1,0 +1,57 @@
+<head>
+    <title>Profile</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="row" style="padding-left: 2%;padding-top:1%;">
+            <div class="col-md-9">
+                <h2>BookMyHotel</h2>
+            </div>
+            {% if name %}
+                <div class="col-md-3">
+                    <a href="{% url 'dashboard' %}" >{{ name }}</a> |
+                    <a href="{% url 'logout' %}" class="btn btn-primary" >Log out</a><br/><br/><br/>
+                </div>
+            {% endif %}
+    </div>
+
+    <div class="col-md-12">
+        <div class="row">
+            <label id="user" class="col-12 col-form-label"><h3>{{name}}</h3></label>
+        </div><br/>
+        <div class="row">
+            <label id="user" class="col-1 col-form-label"><b>Username</b></label>
+            <label id="user" class="col-11 col-form-label"><b>{{record.user_name}}</b></label>
+        </div><br/>
+        <div class="form-group row">
+            <label id="user" class="col-2 col-form-label">Email id</label>
+            <label id="user" class="col-10 col-form-label">{{record.email}}</label>
+        </div><br/>
+        <div class="form-group row">
+            <label id="user" class="col-2 col-form-label">Address</label>
+            <label id="user" class="col-10 col-form-label">{{record.address}}</label>
+        </div><br/>
+        <div class="form-group row">
+            <label id="user" class="col-2 col-form-label">City</label>
+            <label id="user" class="col-10 col-form-label">{{record.city}}</label>
+        </div><br/>
+        <div class="form-group row">
+            <label id="user" class="col-2 col-form-label">State</label>
+            <label id="user" class="col-10 col-form-label">{{record.state}}</label>
+        </div><br/>
+        <div class="form-group row">
+            <label id="user" class="col-2 col-form-label">Country</label>
+            <label id="user" class="col-10 col-form-label">{{record.country}}</label>
+        </div><br/>
+        <div class="form-group row">
+            <label id="user" class="col-2 col-form-label">Contact number</label>
+            <label id="user" class="col-10 col-form-label">{{record.phone_number}}</label>
+        </div><br/>
+        <div class="form-group row">
+            <label id="user" class="col-2 col-form-label">Adhaar no</label>
+            <label id="user" class="col-10 col-form-label">{{record.adhaar_no}}</label>
+        </div><br/>
+    </div>
+
+</body>
