@@ -24,6 +24,11 @@ class RoomPriceDetails(models.Model):
 
 
 class RoomDetails(models.Model):
+    ROOM_STATUS = (('V', 'Vacant'),
+                   ('D', 'Dirty'),
+                   ('O', 'Occupied'),
+                   ('B', 'Booked')
+                   )
     room_no = models.PositiveIntegerField(primary_key=True)
     hotel = models.ForeignKey(HotelDetails)
     guest = models.ForeignKey(GuestDetails)
@@ -31,23 +36,28 @@ class RoomDetails(models.Model):
     layout = models.CharField(max_length=40)
     floor_no = models.PositiveIntegerField()
     nru = models.CharField(max_length=255)
-    room_status = models.CharField(max_length=10)
+    room_status = models.CharField(max_length=1)
 
 
 class DiscountDetails(models.Model):
     discount_id = models.CharField(max_length=255, primary_key=True)
     hotel = models.ForeignKey(HotelDetails)
     month_valid = models.CharField(max_length=4)
-    length_of_stay = models.PositiveIntegerField()
+    length_of_stay = models.CharField(max_length=16)
     room = models.ForeignKey(RoomPriceDetails)
     offer_percent = models.PositiveIntegerField()
 
 
 class BookingDetails(models.Model):
+    BOOKING_STATUS = (('P', 'Pending'),
+                      ('B', 'Booked'),
+                      ('C1', 'Cancelled by user'),
+                      ('C2', 'Cancelled by hotel')
+                      )
     booking_id = models.AutoField(primary_key=True)
     guest = models.ForeignKey(GuestDetails)
     hotel = models.ForeignKey(HotelDetails)
-    booking_status = models.CharField(max_length=10)
+    booking_status = models.CharField(max_length=2, choices=BOOKING_STATUS)
     check_in_date = models.CharField(max_length=15)
     check_out_date = models.CharField(max_length=15)
     check_in_time = models.CharField(max_length=15)
