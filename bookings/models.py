@@ -7,7 +7,7 @@ class HotelDetails(models.Model):
     name = models.CharField(max_length=255)
     email = models.CharField(max_length=255)
     reg_no = models.CharField(max_length=255)
-    contact_no = models.CharField(max_length=10)
+    contact_no = models.CharField(max_length=255)
     owner_name = models.CharField(max_length=255)
     owner_email = models.CharField(max_length=255)
     owner_contact_no = models.CharField(max_length=255)

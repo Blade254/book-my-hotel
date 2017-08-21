@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.db.models import Max, Min
+from django.db.models import Min
 from bookings.models import BookingDetails, RoomPriceDetails, RoomDetails, DiscountDetails, HotelDetails
 from django.http import JsonResponse
 import datetime
@@ -49,16 +49,22 @@ def booking(request):
         new_booking.save()
         return render(request, 'summary.html', {'name': request.session['username'], 'new_booking': new_booking})
     hotel_id = request.GET.get('hotel_id')
+    hotel_name = HotelDetails.objects.get(pk=hotel_id).name
     records = RoomPriceDetails.objects.filter(hotel_id=hotel_id)
     room_types = [records[i].room_type for i in range(len(records))]
-    return render(request, 'new_booking.html', {'name': request.session['username'], 'room_types': room_types})
+    return render(request, 'new_booking.html', {'name': request.session['username'], 'room_types': room_types,
+                                                'hotel_id': "bmh-"+str(hotel_id), 'hotel_name': hotel_name})
 
 
 def find_hotel(request):
+    if 'username' not in request.session:
+        return redirect('login')
     if request.is_ajax():
         city = request.GET.get('city')
         hotels = HotelDetails.objects.filter(city=city)
+        price_list = []
         for hotel in hotels:
-            max_price = RoomPriceDetails.objects.filter(hotel_id=hotel.hotel_id).aggregate(Max('price_per_day'))['price_per_day__max']
             min_price = RoomPriceDetails.objects.filter(hotel_id=hotel.hotel_id).aggregate(Min('price_per_day'))['price_per_day__min']
-
+            price_list.append(min_price)
+        return JsonResponse({'hotels': hotels, 'price_list': price_list})
+    return render(request, 'search.html', {'name': request.session['username']})
