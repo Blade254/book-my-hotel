@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
-from bookings.models import BookingDetails, RoomPriceDetails, RoomDetails, DiscountDetails
+from django.db.models import Max, Min
+from bookings.models import BookingDetails, RoomPriceDetails, RoomDetails, DiscountDetails, HotelDetails
 from django.http import JsonResponse
 import datetime
 
@@ -21,10 +22,12 @@ def booking(request):
                 low, high = map(int, record.length_of_stay.split(':'))
                 if high.strip() != -1:
                     if low < no_of_days <= high:
-                        return JsonResponse({'discount_id': record.discount_id, 'offer_percent': record.offer_percent})
+                        return JsonResponse({'discount_id': record.discount_id, 'offer_percent': record.offer_percent,
+                                             'message': 'success'})
                 elif high.strip() == -1:
                     if no_of_days > low:
-                        return JsonResponse({'discount_id': record.discount_id, 'offer_percent': record.offer_percent})
+                        return JsonResponse({'discount_id': record.discount_id, 'offer_percent': record.offer_percent,
+                                             'message': 'success'})
             return JsonResponse({'discount_id': 'OOps... No discount available'})
     if request.method == 'POST':
         new_booking = BookingDetails()
@@ -48,8 +51,14 @@ def booking(request):
     hotel_id = request.GET.get('hotel_id')
     records = RoomPriceDetails.objects.filter(hotel_id=hotel_id)
     room_types = [records[i].room_type for i in range(len(records))]
-    return render(request, 'booking.html', {'name': request.session['username'], 'room_types': room_types})
+    return render(request, 'new_booking.html', {'name': request.session['username'], 'room_types': room_types})
 
 
-
+def find_hotel(request):
+    if request.is_ajax():
+        city = request.GET.get('city')
+        hotels = HotelDetails.objects.filter(city=city)
+        for hotel in hotels:
+            max_price = RoomPriceDetails.objects.filter(hotel_id=hotel.hotel_id).aggregate(Max('price_per_day'))['price_per_day__max']
+            min_price = RoomPriceDetails.objects.filter(hotel_id=hotel.hotel_id).aggregate(Min('price_per_day'))['price_per_day__min']
 
