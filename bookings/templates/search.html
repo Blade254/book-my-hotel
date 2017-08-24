@@ -2,7 +2,44 @@
 
 
 {% block style %}
+    .card {
+        margin-top: 3%;
+        margin-left: 5%;
+        margin-bottom: 3%;
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+        transition: 0.3s;
+        width: 30%;
+        border-radius: 5px;
+        float: left;
+    }
 
+    .card:hover {
+        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    }
+
+    img {
+        border-radius: 5px 5px 0 0;
+    }
+
+    .container1 {
+        padding: 2px 16px;
+        width: 100%;
+
+        text-align: left;
+    }
+    .button3 {
+        background-color: #f44336;
+        color: white;
+
+        font-weight: 400;
+        font-size: 14px;
+        border: 2px solid #f44336;
+    }
+
+    .button3:hover {
+        background-color: #da190b;
+        color: white;
+    }
 {% endblock style %}
 
 {% block script %}
@@ -49,7 +86,12 @@
                         success: function (data) {
                             var i;
                             for(i=0; i<data.hotels_list.length;i++){
-                                $('#card1').append("<div class='card' id='card'><img src='../static/BGImage/hotel3.jpg' alt='Avatar' style='width:100%'><div class='container1'><h4><b>Hotel name: "+ data.hotels_list[i][1]+"</b></h4> <h5>Rooms start at Rs."+ data.hotels_list[i][2]+"/night</h5><a class='button button3' style='padding-left:20px;padding-right:20px' href='{% url 'booking' %}?hotel_id="+ data.hotels_list[i][0]+"'>Book</a>  </div></div>");
+                                $('#card1').append("<div class='card' id='card'><img src='/static/bookings/hotel3.jpg'"
+                                    +" alt='Avatar' style='width:100%'><div class='container1'><h5><b>Hotel name: "
+                                    + data.hotels_list[i][1]+"</b></h5> <h6>Rooms start at Rs.<b>"
+                                    + data.hotels_list[i][2]+"/night</b></h6><a class='btn btn-primary'"
+                                    +" style='padding-left:20px;padding-right:20px' href='{% url 'booking' %}?hotel_id="
+                                    + data.hotels_list[i][0]+"'>Book</a></div></div><br/>");
                             }
 
                         },
