@@ -38,6 +38,7 @@
         </div>
         <div class="container">
             <form class="form-horizontal" action="{% url 'booking' %}"  method="post">
+                {% csrf_token %}
                 <div class="form-group row">
                     <label id="head"><b>Booking Details</b></label><br/>
                 </div>
@@ -86,7 +87,7 @@
                 </div>
             <div class="form-group row">
                 <label class="control-label col-sm-2">Number of days:</label>
-                <input type="text" class="form-control col-sm-2" id="total_days" name="total_days" readonly="true" size="5">
+                <input type="text" class="form-control col-sm-2" id="total_days" name="total_days" readonly size="5">
             </div>
             <div class="form-group row">
                 <label class="control-label col-sm-2" id = "total_guests">Number of Guests:</label>
@@ -115,25 +116,25 @@
             </div>
             <div class="form-group row">
                 <label class="control-label col-sm-2">Price per day:</label>
-                <label class="control-label col-sm-2"id="price_per_day"></label>
+                <label class="control-label col-sm-2" id="price_per_day"></label>
             </div>
             <div class="form-group row">
                 <label class="control-label col-sm-2" id = "status_label">Room Status:</label>
                 <label class="control-label col-sm-6" id="status" ></label><br/>
             </div>
             <div class="form-group row">
-                <label id = "total_rooms" class="control-label col-sm-2">Rooms needed:</label>
+                <label class="control-label col-sm-2">Rooms needed:</label>
                 <input type="text" id="total_rooms" class="form-control col-sm-2" name="total_rooms">
             </div>
             <div class="form-group row">
                 <label id="discount_id" class="control-label col-sm-2">Check for discount</label>
                 <input type="hidden" class="form-control" name="discount_id" id="discount_id">
-                <label id = "discount" class="control-label"></label>
+                <b><label id = "discount" class="control-label"></label></b>
                 <button type="button" id="dis_btn" class="btn btn-primary">Check</button>
             </div>
 
             <div class="form-group row">
-                <label id = "total_cost" class="control-label col-sm-2">Total price:</label>
+                <label class="control-label col-sm-2">Total price:</label>
                 <label class="control-label" style="float: left">Rs.</label>
                 <div class="col-sm-2">
                     <input type="text" class="form-control" id="total_cost" size="10" name="total_cost" value="0" readonly="true">
@@ -160,6 +161,10 @@
             var price;
             var discount_status = null;
             $(document).ready(function() {
+                if(!!window.performance && window.performance.navigation.type == 2)
+                {
+                    window.location.reload();
+                }
                 $('#dis_btn').prop('disabled', false);
                 $('#room_type').on('change', function () {
                     var total_rooms = $('#total_rooms').val();
@@ -169,12 +174,12 @@
                         url: {% url 'booking' %},
                         contentType:"application/json",
                         dataType:"json",
-                        data: JSON.stringify(data),
+                        data: data,
                         success: function (data) {
-                            price = parseInt(data.room_price);
-                            $('#price').text("Rs. "+data.room_price);
+                            price = parseInt(data.room_price)
+                            $('#price_per_day').text("Rs. "+data.room_price);
                             available = parseInt(data.rooms_available);
-                            $('#status').text(data.rooms_available + " Rooms available on selected category");
+                            $('#status').text(data.rooms_available + " Room(s) available on selected category");
                             if(total_rooms!=null && price !=null && total_days!=null){
                                 if(parseInt(total_rooms) == available){
                                     $('#total_cost').val(parseInt(total_rooms)*price*parseInt(total_days)+".00");
@@ -206,34 +211,35 @@
                $('#dis_btn').on('click',function () {
                      var total_days = $('#total_days').val();
                      var total_rooms = $('#total_rooms').val();
-
+                    var room = $('#room_type').val();
                      if(total_days!=null && room!='Select Room Type' && total_rooms!=null ){
-                         var data = {"request_no": 2, "no_of_days": total_days};
+                         var data = {"request_no": 2, "no_of_days": total_days, 'room_type': room};
+                         alert('hi');
                           $.ajax({
                             url: {% url 'booking' %},
                             contentType:"application/json",
                             dataType:"json",
-                            data: JSON.stringify(data),
+                            data: data,
                             success: function (data) {
-                                var message = data.Message;
+                                var message = data.message;
 
-                                if(message=='success'){
+                                if(message=="success"){
 
                                     var total = parseInt($('#total_rooms').val())*price*parseInt(total_days);
                                     $('#dis_btn').prop('disabled', true);
                                     var discount_id = data.discount_id;
                                     var offer = data.offer_percent;
-                                    $('#discount').text('You are eligible for DISESTEEM-'+discount_id);
+                                    $('#discount').text(discount_id+" available.  ");
 
                                     $('#apply').prop('disabled', false);
                                     $('#apply').on('click', function () {
                                         discount_status = 'DISESTEEM-'+discount_id;
-                                        $('#discounted_price').val(total-(total*(parseInt(offer)/100))+".00")
+                                        $('#discounted_price').val(parseFloat(total-(total*(parseInt(offer)/100))).toFixed(2))
                                         $('#apply').prop('disabled', true);
                                     });
                                 }
                                 else{
-                                    $('#discount').text('No discount available for this booking.');
+                                    $('#discount').text('No discount available for this booking.  ');
                                 }
 
 
@@ -248,9 +254,10 @@
 
                 $('#total_rooms').on('change',function () {
                     var total_rooms = parseInt($('#total_rooms').val());
+                    var total_days = parseInt($('#total_days').val());
                     if(total_rooms == available){
-                        if(total_rooms != null && price !=  null&& $('#total_days').val()!=null) {
-                            $('#total_cost').val(parseInt(total_rooms) * price * parseInt($('#total_days').val()) + ".00");
+                        if(total_rooms != null && price !=  null&& total_days != null) {
+                            $('#total_cost').val(parseFloat(total_rooms * price * total_days).toFixed(2));
                         }
                     }
                     else if(total_rooms>available){

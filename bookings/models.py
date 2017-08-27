@@ -49,7 +49,7 @@ class DiscountDetails(models.Model):
 
 
 class BookingDetails(models.Model):
-    BOOKING_STATUS = (('P', 'Pending'),
+    BOOKING_STATUS = (('A', 'Availed'),
                       ('B', 'Booked'),
                       ('C1', 'Cancelled by user'),
                       ('C2', 'Cancelled by hotel')
@@ -66,8 +66,8 @@ class BookingDetails(models.Model):
     discount = models.ForeignKey(DiscountDetails, to_field='discount_id')
     total_guests = models.PositiveIntegerField(default=0)
     total_days = models.PositiveIntegerField(default=0)
-    total_cost = models.CharField(max_length=15)
-    discounted_price = models.CharField(max_length=15)
+    total_cost = models.DecimalField(max_digits=15, decimal_places=2)
+    discounted_price = models.DecimalField(max_digits=15, decimal_places=2)
     total_rooms = models.PositiveIntegerField(default=0)
     booking_date = models.CharField(max_length=15)
 

@@ -9,13 +9,50 @@
             {% if name %}
                 <div class="col-md-2">
                     <a href="{% url 'home' %}" > Home</a> |
-                    <a href="{% url 'logout' %}" class="btn btn-primary" >Log out</a><br/><br/><br/>
+                    <a href="{% url 'logout' %}" class="btn btn-primary" >Log out</a><br/><br/>
                 </div>
             {% endif %}
         </div>
-        <div class="col-md-12">
-            <a href="{% url 'booking' %}" >Book your hotel</a><br/><br/>
-            <a href="{% url 'home' %}" >Order History</a> <br/><br/>
-            <a href="{% url 'profile' %}" >Profile</a><br/><br/>
+        <nav class="nav justify-content-center">
+            <a class="nav-link" href="{% url 'search' %}" >Book your room now</a><br/><br/>
+            <a class="nav-link" href="{% url 'booking_history' %}" >Order History</a> <br/><br/>
+            <a class="nav-link" href="{% url 'profile' %}" >Profile</a><br/><br/>
+        </nav><br/><br/>
+        <div class="container">
+        {% if details %}
+            {% for detail in details %}
+                <div class="row">
+                    <div class="col-sm-11">
+                        <div class="card">
+                            <div class="card-block">
+                                <b class="card-title" style="font-size: x-large">Booking id:</b> <b>bmh-{{ detail.0.booking_id }}</b><br/><br/>
+                                <h6 class="card-subtitle mb-2 text-muted">Hotel: {{ detail.1 }}</h6>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                    <b><p class="card-text">Room type: {{ detail.0.room_id }}</p></b>
+                                    </div>
+                                    <div class="col-sm-2">
+                                    <b><p class="card-text">Rooms: {{ detail.0.total_rooms }}</p></b>
+                                    </div>
+                                    <div class="col-sm-3">
+                                    <b><p class="card-text">Total price: Rs.{{ detail.0.total_cost }}</p></b>
+                                    </div>
+                                    {% if detail.0.discounted_price > 0 %}
+                                        <div class="col-sm-3">
+                                        <b><p class="card-text">Final price: Rs.{{ detail.0.discounted_price}}</p></b>
+                                        </div>
+                                    {% else %}
+                                        <div class="col-sm-3">
+                                        <b><p class="card-text">Final price: Rs.{{ detail.0.total_cost}}</p></b>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <a href="" class="card-link">Cancel booking</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
         </div>
 {% endblock content %}

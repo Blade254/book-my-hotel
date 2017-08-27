@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import GuestDetails
+from bookings.models import BookingDetails, HotelDetails
 
 
 def home(request):
@@ -20,7 +21,7 @@ def login(request):
             record = get_object_or_404(GuestDetails, user_name=user_name)
         if password == record.password:
             request.session['username'] = record.first_name+" "+record.last_name
-            request.session['user_id'] = record.email
+            request.session['user_id'] = record.user_name
             return redirect('home')
         else:
             return render(request, 'login.html', {'message': 'User id or password is incorrect'})
@@ -63,15 +64,38 @@ def logout(request):
 
 def dashboard(request):
     if 'username' in request.session:
-        return render(request, 'dashboard.html', {'name': request.session['username']})
+        bookings = BookingDetails.objects.filter(guest_id=request.session['user_id']).filter(booking_status='B')
+        details = []
+        for booking in bookings:
+            details.append((booking, HotelDetails.objects.get(pk=booking.hotel_id).name))
+        return render(request, 'dashboard.html', {'name': request.session['username'],
+                                                  'details': details})
     else:
         return redirect('home')
 
 
 def profile(request):
     if 'username' in request.session:
-        record = get_object_or_404(GuestDetails, email=request.session['user_id'])
+        record = get_object_or_404(GuestDetails, user_name=request.session['user_id'])
         return render(request, 'profile.html', {'name': request.session['username'], 'record': record})
+    else:
+        return redirect('home')
+
+
+def booking_history(request):
+    if 'username' in request.session:
+        confirmed_bookings = BookingDetails.objects.filter(guest_id=request.session['user_id']).filter(
+            booking_status='B')
+        cancelled_bookings = BookingDetails.objects.filter(guest_id=request.session['user_id']).filter(
+            booking_status='C1')
+        confirmed_details, cancelled_details = [], []
+        for confirmed_booking in confirmed_bookings:
+            confirmed_details.append((confirmed_booking, HotelDetails.objects.get(pk=confirmed_booking.hotel_id).name))
+        for cancelled_booking in cancelled_bookings:
+            cancelled_details.append((cancelled_booking, HotelDetails.objects.get(pk=cancelled_booking.hotel_id).name))
+        return render(request, 'booking_history.html', {'name': request.session['username'],
+                                                        'confirmed_details': confirmed_details,
+                                                        'cancelled_details': cancelled_details})
     else:
         return redirect('home')
 

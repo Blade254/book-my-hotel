@@ -11,26 +11,25 @@ def booking(request):
         return redirect('home')
     if request.is_ajax():
         request_no = request.GET.get('request_no')
+        room_type = request.GET.get('room_type')
         if int(request_no) == 1:
-            room_type = request.GET.get('room_type')
             room_price = RoomPriceDetails.objects.get(room_type=room_type).price_per_day
-            print(room_price)
             rooms_available = len(RoomDetails.objects.filter(room_id=room_type).filter(room_status='V'))
             return JsonResponse({'room_price': room_price, 'rooms_available': rooms_available})
         elif int(request_no) == 2:
             no_of_days = request.GET.get('no_of_days')
-            records = DiscountDetails.objects.all()
+            records = DiscountDetails.objects.filter(room_id=room_type)
             for record in records:
                 low, high = map(int, record.length_of_stay.split(':'))
-                if str(high).strip() != -1:
+                if str(high).strip() != '-1':
                     if low < int(no_of_days) <= high:
                         return JsonResponse({'discount_id': record.discount_id, 'offer_percent': record.offer_percent,
                                              'message': 'success'})
-                elif str(high).strip() == -1:
+                elif str(high).strip() == '-1':
                     if int(no_of_days) > low:
                         return JsonResponse({'discount_id': record.discount_id, 'offer_percent': record.offer_percent,
                                              'message': 'success'})
-            return JsonResponse({'message': 'none', 'discount_id': 'OOps... No discount available'})
+            return JsonResponse({'message': 'none'})
     if request.method == 'POST':
         new_booking = BookingDetails()
         new_booking.guest_id = request.session['user_id']
@@ -38,20 +37,19 @@ def booking(request):
         new_booking.check_in_date = request.POST.get('check_in_date')
         new_booking.check_in_time = request.POST.get('check_in_time')+request.POST.get('session1')
         new_booking.check_out_date = request.POST.get('check_out_date')
-        new_booking.check_out_time = request.POST.get('check_out_time')++request.POST.get('session2')
+        new_booking.check_out_time = request.POST.get('check_out_time')+request.POST.get('session2')
         new_booking.total_guests = request.POST.get('total_guests')
         new_booking.total_days = request.POST.get('total_days')
         new_booking.total_rooms = request.POST.get('total_rooms')
-        new_booking.discounted_price = request.POST.get('discounted_price')
-        new_booking.total_cost = request.POST.get('total_cost')
-        new_booking.booking_date = datetime.datetime.today().strftime('%Y/%m/%d')
+        new_booking.discounted_price = float(request.POST.get('discounted_price'))
+        new_booking.total_cost = float(request.POST.get('total_cost'))
+        new_booking.booking_date = datetime.datetime.today().strftime('%Y-%m-%d')
         new_booking.discount_id = request.POST.get('discount_id')
         complete_id = request.POST.get('hotel_id')
         new_booking.hotel_id = int(complete_id[complete_id.index('-')+1:])
         new_booking.room_id = request.POST.get('room_type')
         new_booking.save()
-        hotel = HotelDetails.objects.get(pk=new_booking.hotel_id)
-        return redirect('/summary?booking_id={}'.format(new_booking.booking_id))
+        return redirect(reverse('summary') + '?booking_id={}'.format(1))
     hotel_id = request.GET.get('hotel_id')
     hotel_name = HotelDetails.objects.get(pk=hotel_id).name
     records = RoomPriceDetails.objects.filter(hotel_id=hotel_id)
