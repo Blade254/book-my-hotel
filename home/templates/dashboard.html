@@ -47,7 +47,7 @@
                                         </div>
                                     {% endif %}
                                 </div>
-                                <a href="" class="card-link">Cancel booking</a>
+                                <a href="{% url 'cancel_booking' %}?booking_id={{ detail.0.booking_id }}" class="card-link">Cancel booking</a>
                             </div>
                         </div>
                     </div>
