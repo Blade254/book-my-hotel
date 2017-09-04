@@ -87,7 +87,12 @@ def create_employee(request):
                                                     'name': request.session['employee_name']})
 
 
+def update_employee(request):
+    return render(request, 'update_employee.html', {'name': request.session['employee_name']})
+
+
 def office_logout(request):
     if 'employee_name' in request.session:
         request.session.clear()
         return redirect('office_login')
+
