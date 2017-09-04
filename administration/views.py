@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
-from administration.models import EmployeeDetails, HotelDetails
+from administration.models import EmployeeDetails
+from bookings.models import HotelDetails, BookingDetails
 
 
 def office_login(request):
@@ -119,7 +120,12 @@ def update_employee(request):
 def employee(request):
     if 'employee_name' not in request.session:
         return redirect('office_login')
-    return render(request, '')
+    bookings = BookingDetails.objects.filter(booking_status='B')
+    details = []
+    for booking in bookings:
+        details.append((booking, HotelDetails.objects.get(pk=booking.hotel_id).name))
+    return render(request, 'employee.html', {'name': request.session['username'],
+                                             'details': details})
 
 
 def office_logout(request):
