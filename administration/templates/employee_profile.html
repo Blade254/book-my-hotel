@@ -16,7 +16,7 @@
     <div class="form-group" style="padding-top: 1%; height: 200px">
             <div class="row col-xs-1" align="center" style=" background-color:#fff;
                 border:5px solid gray;
-                margin-left: 47%;
+                margin-left: 45%;
                 height:110px;
                 border-radius:50%;
                 -moz-border-radius:50%;
@@ -30,21 +30,17 @@
             </div><br/>
 
     </div>
-    <div class="col-md-12" style="margin-left: 35%">
+    <div class="col-md-12" style="margin-left: 35%;overflow-y: scroll">
         <!--div class="row">
             <label id="user" class="col-12 col-form-label"><h3>{{name}}</h3></label>
         </div--><br/>
-        <div class="row">
-            <label id="user" class="col-2 col-form-label"><b>Username</b></label>
-            <label id="user" class="col-10 col-form-label"><b>{{employee.user_name}}</b></label>
+         <div class="form-group row">
+            <label id="user" class="col-2 col-form-label">Hotel Name</label>
+            <label id="user" class="col-10 col-form-label">{{hotel_name}}</label>
         </div>
         <div class="form-group row">
-                <label class="control-label col-sm-2">Employee id</label>
-                <label id="hotel_id" class="control-label">emp-{{ employee.employee_id }}</label>
-        </div>
-        <div class="form-group row">
-            <label id="user" class="col-2 col-form-label">Department</label>
-            <label id="user" class="col-10 col-form-label">{{employee.department}}</label>
+            <label class="control-label col-sm-2">Employee id</label>
+            <label id="hotel_id" class="control-label"><b>BMH-EMP-{{ employee.employee_id }}</b></label>
         </div>
         <div class="form-group row">
             <label id="user" class="col-2 col-form-label">Designation</label>
@@ -54,6 +50,35 @@
             <label id="user" class="col-2 col-form-label">Experience</label>
             <label id="user" class="col-10 col-form-label">{{employee.experience}}</label>
         </div>
+        <div class="form-group row">
+            <label id="user" class="col-2 col-form-label">Email</label>
+            <label id="user" class="col-10 col-form-label">{{employee.email}}</label>
+        </div>
+        <div class="form-group row">
+            <label id="user" class="col-2 col-form-label">Address</label>
+            <label id="user" class="col-10 col-form-label">{{employee.address}}</label>
+        </div>
+         <div class="form-group row">
+            <label id="user" class="col-2 col-form-label">City</label>
+            <label id="user" class="col-10 col-form-label">{{employee.city}}</label>
+        </div>
+         <div class="form-group row">
+            <label id="user" class="col-2 col-form-label">State</label>
+            <label id="user" class="col-10 col-form-label">{{employee.state}}</label>
+        </div>
+        <div class="form-group row">
+            <label id="user" class="col-2 col-form-label">Contact Number</label>
+            <label id="user" class="col-10 col-form-label">{{employee.contact_number}}</label>
+        </div>
+         <div class="form-group row">
+            <label id="user" class="col-2 col-form-label">Country</label>
+            <label id="user" class="col-10 col-form-label">{{employee.country}}</label>
+        </div>
+        <div class="form-group row">
+            <label id="user" class="col-2 col-form-label">Aadhaar Number</label>
+            <label id="user" class="col-10 col-form-label">{{employee.aadhaar_no}}</label>
+        </div>
+
 
     </div>
     <script type="text/javascript">
