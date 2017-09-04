@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 
-
+{% block script %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+{% endblock script %}
 {% block content %}
     <div class="row" style="padding-left: 2%;padding-top:1%;">
         <div class="col-md-9">
@@ -20,7 +22,7 @@
             {% csrf_token %}
             <h3>Update employee</h3>
             {% if message %}
-                <b style="color: red">{{ message }}</b>
+                <b id="message" style="color: red">{{ message }}</b>
             {% endif %}
             <br/>
             <div class="form-group row">
@@ -32,8 +34,10 @@
                 <label id="hotel_name" class="control-label">{{ hotel_name }}</label>
             </div>
             <div class="form-group row">
-                <label class="control-label col-sm-2">Employee id</label>
-                <label id="hotel_id" class="control-label">emp-{{ employee_id }}</label>
+                <label class="control-label col-sm-2">Employee ID</label>
+                <input class="form-control col-sm-2" type="text" style="margin-right: 2%" id="employee_id" name = "employee_id" placeholder = "Employee ID" required="true" >
+                <input type = "button" id="check" value = "Check" class="btn btn-primary">
+
             </div>
 
             <div class="form-group row">
@@ -50,38 +54,37 @@
     </div>
 
 
-    <script>
+    <script type="text/javascript">
+        $(document).ready(function() {
         $('#check').on('click', function () {
-                var id = $('#emp_id').val();
-                var data = {'ID': id};
+                var id = $('#employee_id').val();
+                alert(id);
+                var data = {'employee_id': id};
                 $.ajax({
-                    type: "POST",
-                    url: '/administration/update-employee',
+
+                    url: {% url 'update_employee' %},
                     contentType: "application/json",
                     dataType: "json",
-                    data: JSON.stringify(data),
+                    data: data,
                     success: function (data) {
-                       if(data.msg == 'OK'){
+                       if(data.msg == 'success'){
                             $('#update_sec').show();
-                            $('#fname').val(data.fname);
 
-                            $('#lname').val(data.lname);
 
-                            $('#designation').val(data.Designation);
-                            $('#experience').val(data.Experience);
-                            $('#department').val(data.Department);
-                            var name = 'emp_type';
-                            var SelectedValue = data.IsAdmin;
-                            $('input[name="' + name+ '"][value="' + SelectedValue + '"]').prop('checked', true);
+                            $('#designation').val(data.designation);
+                            $('#experience').val(data.experience);
+
+
                        }
                        else{
-                           $('#update_sec').hide();
-                           $('#dsn').text("Employee does not exist.");
+                           //$('#update_sec').hide();
+                           $('#message').text("Employee does not exist.");
                        }
                     }
 
                 });
             });
+        });
     </script>
 
 {% endblock content %}

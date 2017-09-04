@@ -92,6 +92,7 @@ def update_employee(request):
     if 'employee_name' not in request.session:
         return redirect('office_login')
     if request.is_ajax():
+        print(request.GET.get('employee_id'))
         employee_id = request.GET.get('employee_id')
         try:
             record = EmployeeDetails.objects.get(pk=employee_id)
