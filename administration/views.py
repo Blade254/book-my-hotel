@@ -32,6 +32,7 @@ def office_login(request):
 
 def office_signup(request):
     if 'employee_name' in request.session:
+
         return redirect('home')
     if request.method == 'POST':
         employee_id = request.POST.get('employee_id')
@@ -124,7 +125,7 @@ def employee(request):
     details = []
     for booking in bookings:
         details.append((booking, HotelDetails.objects.get(pk=booking.hotel_id).name))
-    return render(request, 'employee.html', {'name': request.session['username'],
+    return render(request, 'employee.html', {'name': request.session['user_name'],
                                              'details': details})
 
 
