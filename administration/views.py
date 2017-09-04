@@ -1,4 +1,5 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
+from django.http import JsonResponse
 from administration.models import EmployeeDetails, HotelDetails
 
 
@@ -88,7 +89,30 @@ def create_employee(request):
 
 
 def update_employee(request):
+    if 'employee_name' not in request.session:
+        return redirect('office_login')
+    if request.is_ajax():
+        employee_id = request.GET.get('employee_id')
+        try:
+            record = EmployeeDetails.objects.get(pk=employee_id)
+            return JsonResponse({'message': 'success', 'designation': record.designation_id, 'experience': record.experience})
+        except EmployeeDetails.DoesNotExist:
+            return JsonResponse({'message': 'failure'})
+    if request.method == 'POST':
+        employee_id = request.POST.get('employee_id')
+        employee = EmployeeDetails.objects.get(pk=employee_id)
+        employee.experience = request.POST.get('experience')
+        employee.designation = request.POST.get('designation')
+        employee.save()
+        return render(request, 'update_employee.html', {'name': request.session['employee_name'],
+                                                        'message': 'Successfully updated.'})
     return render(request, 'update_employee.html', {'name': request.session['employee_name']})
+
+
+def employee(request):
+    if 'employee_name' not in request.session:
+        return redirect('office_login')
+    return render(request, '')
 
 
 def office_logout(request):
