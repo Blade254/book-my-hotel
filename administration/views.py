@@ -104,9 +104,15 @@ def update_employee(request):
         employee.experience = request.POST.get('experience')
         employee.designation = request.POST.get('designation')
         employee.save()
+        hotel_id = EmployeeDetails.objects.get(employee_id=request.session['employee_id']).hotel_id
+        hotel_name = HotelDetails.objects.get(pk=hotel_id).name
         return render(request, 'update_employee.html', {'name': request.session['employee_name'],
-                                                        'message': 'Successfully updated.'})
-    return render(request, 'update_employee.html', {'name': request.session['employee_name']})
+                                                        'message': 'Successfully updated.',
+                                                        'hotel_id': hotel_id, 'hotel_name': hotel_name})
+    hotel_id = EmployeeDetails.objects.get(employee_id=request.session['employee_id']).hotel_id
+    hotel_name = HotelDetails.objects.get(pk=hotel_id).name
+    return render(request, 'update_employee.html', {'name': request.session['employee_name'],
+                                                    'hotel_id': hotel_id, 'hotel_name': hotel_name })
 
 
 def employee(request):
