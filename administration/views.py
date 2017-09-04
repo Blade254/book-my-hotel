@@ -104,7 +104,7 @@ def update_employee(request):
         employee_id = request.POST.get('employee_id')
         employee = EmployeeDetails.objects.get(pk=employee_id)
         employee.experience = request.POST.get('experience')
-        employee.designation = request.POST.get('designation')
+        employee.designation_id = request.POST.get('designation')
         employee.save()
         hotel_id = EmployeeDetails.objects.get(employee_id=request.session['employee_id']).hotel_id
         hotel_name = HotelDetails.objects.get(pk=hotel_id).name
