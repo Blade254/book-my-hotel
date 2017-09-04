@@ -8,7 +8,7 @@
             </div>
             {% if name %}
                 <div class="col-md-3">
-                    <a href="{% url 'dashboard' %}" >{{ name }}</a> |
+
                     <a href="{% url 'logout' %}" class="btn btn-primary" >Log out</a><br/><br/><br/>
                 </div>
             {% endif %}
@@ -36,23 +36,23 @@
         </div--><br/>
         <div class="row">
             <label id="user" class="col-2 col-form-label"><b>Username</b></label>
-            <label id="user" class="col-10 col-form-label"><b>{{record.user_name}}</b></label>
+            <label id="user" class="col-10 col-form-label"><b>{{employee.user_name}}</b></label>
         </div>
         <div class="form-group row">
                 <label class="control-label col-sm-2">Employee id</label>
-                <label id="hotel_id" class="control-label">emp-{{ employee_id }}</label>
+                <label id="hotel_id" class="control-label">emp-{{ employee.employee_id }}</label>
         </div>
         <div class="form-group row">
             <label id="user" class="col-2 col-form-label">Department</label>
-            <label id="user" class="col-10 col-form-label">{{record.department}}</label>
+            <label id="user" class="col-10 col-form-label">{{employee.department}}</label>
         </div>
         <div class="form-group row">
             <label id="user" class="col-2 col-form-label">Designation</label>
-            <label id="user" class="col-10 col-form-label">{{record.designation}}</label>
+            <label id="user" class="col-10 col-form-label">{{employee.designation}}</label>
         </div>
         <div class="form-group row">
             <label id="user" class="col-2 col-form-label">Experience</label>
-            <label id="user" class="col-10 col-form-label">{{record.experience}}</label>
+            <label id="user" class="col-10 col-form-label">{{employee.experience}}</label>
         </div>
 
     </div>
