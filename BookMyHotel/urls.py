@@ -20,5 +20,5 @@ urlpatterns = [
     url(r'^administration/', admin.site.urls),
     url(r'^', include('home.urls')),
     url(r'^bookings/', include('bookings.urls')),
-    url(r'^admin/', include('administration.urls'))
+    url(r'^office/', include('administration.urls'))
 ]
