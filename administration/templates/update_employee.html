@@ -49,7 +49,7 @@
                 <label class="control-label col-sm-2">Experience</label>
                 <input class="form-control col-sm-2" type="text" id="experience" name = "experience" placeholder = "Experience" required="true" >
             </div>
-            <input type = "submit" value = "Update" class="btn btn-primary">
+            <input type = "submit" value = "Create" class="btn btn-primary">
         </form>
 
     </div>
@@ -58,11 +58,13 @@
     <script>
         $(document).ready(function() {
             $('#check').on('click', function () {
+                    alert('hi');
                     var id = $('#employee_id').val();
+                    alert(id);
                     var data = {'employee_id': id};
                     $.ajax({
 
-                        url: "{% url 'update_employee' %}",
+                        url: '{% url 'update_employee' %}',
                         contentType: "application/json",
                         dataType: "json",
                         data: data,
@@ -80,9 +82,6 @@
 
                                $('#message').text("Employee does not exist.");
                            }
-                        },
-                        error: function (msg) {
-                            alert(msg);
                         }
 
                     });

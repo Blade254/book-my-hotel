@@ -24,7 +24,7 @@ def office_login(request):
             if designation == 'admin':
                 return redirect('admin')
             elif designation == 'employee':
-                return redirect('home')
+                return redirect('employee')
         else:
             return render(request, 'office_login.html', {'message': 'Password is incorrect'})
     return render(request, 'office_login.html')
