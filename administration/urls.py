@@ -7,4 +7,5 @@ urlpatterns = [url(r'^$', views.office_login, name='office_login'),
                url(r'^create/$', views.create_employee, name='create_employee'),
                url(r'^update/$', views.update_employee, name='update_employee'),
                url(r'^admin/$', views.admin, name='admin'),
-               url(r'^service/$', views.employee, name='employee')]
+               url(r'^service/$', views.employee, name='employee'),
+               url(r'^profile/$', views.employee_profile, name='employee_profile')]

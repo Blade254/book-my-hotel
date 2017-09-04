@@ -6,6 +6,7 @@ from bookings.models import HotelDetails, BookingDetails
 
 def office_login(request):
     if 'employee_id' in request.session:
+        designation = EmployeeDetails.objects.get(pk=request.session['employee_id']).designation_id
         return redirect('home')
     if request.method == 'POST':
         user_name = request.POST.get('user_name')
@@ -21,6 +22,7 @@ def office_login(request):
             request.session['employee_name'] = record.user_name
             request.session['employee_id'] = record.employee_id
             designation = EmployeeDetails.objects.get(pk=record.employee_id).designation_id
+            print(designation)
             if designation == 'admin':
                 return redirect('admin')
             elif designation == 'employee':
@@ -32,7 +34,6 @@ def office_login(request):
 
 def office_signup(request):
     if 'employee_name' in request.session:
-
         return redirect('home')
     if request.method == 'POST':
         employee_id = request.POST.get('employee_id')
@@ -127,6 +128,15 @@ def employee(request):
         details.append((booking, HotelDetails.objects.get(pk=booking.hotel_id).name))
     return render(request, 'employee.html', {'name': request.session['employee_name'],
                                              'details': details})
+
+
+def employee_profile(request):
+    if 'employee_name' not in request.session:
+        return redirect('office_login')
+    record = EmployeeDetails.objects.get(pk=request.session['employee_id'])
+    hotel_name = HotelDetails.objects.get(pk=record.hotel_id).name
+    return render(request, 'employee_profile.html', {'name': request.session['employee_name'],
+                                                     'employee': record, 'hotel_name':hotel_name})
 
 
 def office_logout(request):

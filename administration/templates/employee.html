@@ -3,22 +3,21 @@
 
 {% block content %}
         <div class="row" style="padding-left: 2%;padding-top:1%;">
-            <div class="col-md-9">
+            <div class="col-md-10">
                 <h2>BookMyHotel</h2>
             </div>
             {% if name %}
-                <div class="col-md-3">
-                    <a href="{% url 'employee' %}" > {{ name }}</a> |
+                <div class="col-md-2">
+                    <a href="{% url 'employee_profile' %}" > {{ name }}</a> |
                     <a href="{% url 'logout' %}" class="btn btn-primary" >Log out</a><br/><br/>
                 </div>
             {% endif %}
         </div>
         <nav class="nav justify-content-center">
 
-            <a class="nav-link" href="{% url 'booking_history' %}" >Order History</a> <br/><br/>
-            <a class="nav-link" href="{% url 'employee_profile' %}" >Profile</a><br/><br/>
+            <a class="nav-link" href="{% url 'home' %}" >Order History</a> <br/><br/>
         </nav><br/><br/>
-        <div class="container" style="overflow-y: scroll;">
+        <div class="container">
         {% if details %}
             {% for detail in details %}
                 <div class="row">
