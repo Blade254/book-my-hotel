@@ -64,12 +64,12 @@
                     var data = {'employee_id': id};
                     $.ajax({
 
-                        url: {% url 'update_employee' %},
+                        url: '{% url 'update_employee' %}',
                         contentType: "application/json",
                         dataType: "json",
                         data: data,
                         success: function (data) {
-                           if(data.msg == 'success'){
+                           if(data.message == 'success'){
                                 $('#update_sec').show();
 
 

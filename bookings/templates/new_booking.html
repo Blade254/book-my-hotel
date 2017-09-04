@@ -208,7 +208,7 @@
                $('#dis_btn').on('click',function () {
                      var total_days = $('#total_days').val();
                      var total_rooms = $('#total_rooms').val();
-                    var room = $('#room_type').val();
+                     var room = $('#room_type').val();
                      if(total_days!=null && room!='Select Room Type' && total_rooms!=null ){
                          var data = {"request_no": 2, "no_of_days": total_days, 'room_type': room};
                           $.ajax({
