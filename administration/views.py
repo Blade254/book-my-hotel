@@ -125,7 +125,7 @@ def employee(request):
     details = []
     for booking in bookings:
         details.append((booking, HotelDetails.objects.get(pk=booking.hotel_id).name))
-    return render(request, 'employee.html', {'name': request.session['user_name'],
+    return render(request, 'employee.html', {'name': request.session['employee_name'],
                                              'details': details})
 
 
