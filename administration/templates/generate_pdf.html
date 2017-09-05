@@ -1,0 +1,53 @@
+{% extends 'pdf_base.html' %}
+
+{% block content %}
+    <div >
+        <ul class="nav nav-tabs nav-fill">
+            <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#confirmed">{{ name }}</a></li>
+        </ul>
+        <div class="tab-content">
+        <div id="confirmed" class="tab-pane active" role="tabpanel">
+            <table class="table" style="table-layout: fixed;font-size: xx-small">
+                <thead>
+                    <tr>
+                        <th>Booking id</th>
+                        <th>Guest id</th>
+                        <th>Hotel name</th>
+                        <th>Check in</th>
+                        <th>Check out</th>
+                        <th>Booked date</th>
+                        <th>Room type</th>
+                        <th>Rooms</th>
+                        <th>Guests</th>
+                        <th>Total price</th>
+                        <th>Final price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% if bookings %}
+                    {% for booking in bookings %}
+                        <tr>
+                            <th scope="row">{{ booking.booking_id }}</th>
+                            <td>{{ booking.guest_id }}</td>
+                            <td>{{ hotel_name }}</td>
+                            <td>{{ booking.check_in_date }}&nbsp;{{ booking.check_in_time}}</td>
+                            <td>{{ booking.check_out_date }}&nbsp;{{ booking.check_out_time}}</td>
+                            <td>{{ booking.booking_date }}</td>
+                            <td>{{ booking.room_id }}</td>
+                            <td>{{ booking.total_rooms }}</td>
+                            <td>{{ booking.total_guests }}</td>
+                            <td>{{ booking.total_cost}}</td>
+                            {% if booking.discounted_price > 0 %}
+                                <td>{{ booking.discounted_price}}</td>
+                            {% else %}
+                                <td>{{ booking.total_cost}}</td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    </div>
+{% endblock content %}

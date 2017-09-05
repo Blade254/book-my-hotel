@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BookMyHotel</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+    <style>
+        .center{
+            display: block;
+            margin-right: auto;
+            margin-left: auto;
+        }
+        {% block style %}
+        {% endblock style %}
+        th{
+            width:25px;
+        }
+        td{
+            width:20px;
+            word-wrap:break-word;
+        }
+    </style>
+</head>
+<body>
+    <div class="center">
+        <div class="row">
+            <h1>BookMyHotel</h1>
+        </div>
+        <div class="row">
+            <h6>"Book your dream hotels here"</h6>
+        </div>
+    </div>
+    {% block content %}
+    {% endblock content %}
+</body>
+</html>

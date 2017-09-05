@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect, reverse
 from django.template import RequestContext
 from django.db.models import Min
-from bookings.models import BookingDetails, RoomPriceDetails, RoomDetails, DiscountDetails, HotelDetails, DiscountAvailed
+from bookings.models import BookingDetails, RoomPriceDetails, RoomDetails, DiscountDetails, HotelDetails, DiscountAvailed, GuestDetails
 from django.http import JsonResponse
 import datetime
+from django.core.mail import EmailMessage
 
 
 def booking(request):
@@ -57,12 +58,19 @@ def booking(request):
         for room in rooms:
             room.guest_id = new_booking.guest_id
             room.room_status = 'B'
+            room.booking_id = new_booking.booking_id
             room.save()
         # update availed discount details
         discount_availed = DiscountAvailed(discount_id=new_booking.discount_id, guest_id=new_booking.guest_id,
                                            hotel_id=new_booking.hotel_id)
         discount_availed.save()
-
+        # send email confirmation
+        hotel_name = HotelDetails.objects.get(pk=new_booking.hotel_id).name
+        email_id = GuestDetails.objects.get(pk=new_booking.guest_id).email
+        email = EmailMessage('Booking confirmation', 'Your booking in ' + hotel_name + ' for room(s) of type ' +
+                             new_booking.room_id + ' on ' + new_booking.booking_date + ' has been confirmed.',
+                             to=[email_id])
+        email.send()
         return redirect(reverse('summary') + '?booking_id={}'.format(new_booking.booking_id))
     hotel_id = request.GET.get('hotel_id')
     hotel_name = HotelDetails.objects.get(pk=hotel_id).name
@@ -104,4 +112,10 @@ def cancel_booking(request):
     record = BookingDetails.objects.get(pk=booking_id)
     record.booking_status = 'C1'
     record.save()
+    rooms = RoomDetails.objects.filter(booking_id=booking_id)
+    for room in rooms:
+        room.room_status = 'V'
+        room.booking_id = ''
+        room.guest_id = 'None'
+        room.save()
     return redirect('dashboard')

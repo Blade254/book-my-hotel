@@ -2,8 +2,9 @@
 
 {% block content %}
     <div class="row" style="padding-left: 2%;padding-top:1%;">
-        <div class="col-md-9">
-            <h2>BookMyHotel</h2>
+        <div class="col-md-9 row">
+            <img src="/static/home/glosys.jpg" style="width: 17%; height: 90%;"/>
+            <h2 style="padding-left: 2%; padding-top: 1%">BookMyHotel</h2>
         </div>
         {% if name %}
             <div class="col-md-3">
@@ -11,10 +12,13 @@
                 <a href="{% url 'logout' %}" class="btn btn-primary" >Log out</a>
             </div>
         {% else %}
-        <div class="col-md-3">
-            <a href="{% url 'login' %}" class="btn btn-primary" >Login</a> |
-            <a href="{% url 'signup' %}" class="btn btn-primary" >Sign up</a>
-        </div>
+            <div class="col-md-3 float-right">
+                <a href="{% url 'login' %}" class="btn btn-primary" >Login</a> |
+                <a href="{% url 'signup' %}" class="btn btn-primary" >Sign up</a>
+                <a href="{% url 'office_login' %}" >
+                    <img class="icon icons8-Admin-Settings-Male-Filled" width="30" height="30" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAC+klEQVRIS91WTVIaURD+ehhKd5oTCFUZtoHAPnACyQmCGx1W6gkkJ5CshmQDniDkBOI6YGYNVkFOELPT8JhO9cBLwXNkBssqqzIrqujXX/98/XUTXuijp+LmvwzzadDO90Pn6ik+NgIufr6pEgdnAOUNsGbfdU43CSAxcLF10wS4RoymSnHXP8z5AiTBgLkD8C+QdTo4et1NEkAi4Lw3ztikxsriggZcdp5vj3etP6pmMc4fszGDSQRc9IYdeTio52rrsklqJz4SAZe8US+w0L0+cpprgedlbw9c51VcuRMBF1ujW2JU+3Wnt85hyRuVQbjsu06s31iDkEAvBZy01M+fcUJylbxRA0C5X3fKz9TjoQ9YvYH7+iSmxw0mHP8H5PKGHSLaU2wf+PXsJCprEZHUvWoDnB24OVNSHzxJxOrQ6Z3yGdy4rudCMTE/LZ0zi8tR6vYk5QpHapF133UqkcAJCajfJspYjEWvU6R8Zj4xs55vLf6q2M7qVui1OQX/jqpAYuC5kNw0iTlvjouMUQCeBNvprn+QvRXbUmvEYXaMK20vLdP/bwQczinxft/NFczthOk0kwrokoCOsvjCDuiHtpGNlQrojMAZtZWuCPhGwMXWqEvAPoMnxHSgtXvB6AkBO3HCwcC3getUEwGLY3EozCbCnvw2927YBvBxHDAYFQl4LfBbb1iziD6IDDLR+xkFk1RAvSiCLWzbGpgZP0GQK6WsK8HA7cziipAtEng+k8E5gTL/HC0e2TPaVdu2b91Nq8JuvRiWMxXQQd0J3+rrJXaOzchXHIIns610IXWvOszcfRR40Uf9ttga+gR6s+xrJeOo6KN69iAjqA4DGd3/sKRsF2SmZZ6XGa5bsAKsWRtHEAZ9MjdVdNDsm6ewvk5Wgb3RREe9DjwgnJr3lxwLILyLCxqMj/260zBLLYs89lOwO8tbaj7H057Zx+g28YVcq4nmODYSYW97vGvfqS5b1JSjXkum5oOoHoMz+kR+NmAzuCitXrb5CxjbutBsIX74AAAAAElFTkSuQmCC">
+                </a>
+            </div>
         {% endif %}
     </div>
     <br/>

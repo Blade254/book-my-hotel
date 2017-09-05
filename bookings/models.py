@@ -23,22 +23,6 @@ class RoomPriceDetails(models.Model):
     price_per_day = models.PositiveIntegerField(default=0)
 
 
-class RoomDetails(models.Model):
-    ROOM_STATUS = (('V', 'Vacant'),
-                   ('D', 'Dirty'),
-                   ('O', 'Occupied'),
-                   ('B', 'Booked')
-                   )
-    room_no = models.PositiveIntegerField(primary_key=True)
-    hotel = models.ForeignKey(HotelDetails, to_field='hotel_id')
-    guest = models.ForeignKey(GuestDetails, to_field='user_name')
-    room = models.ForeignKey(RoomPriceDetails, to_field='room_type')
-    layout = models.CharField(max_length=40)
-    floor_no = models.PositiveIntegerField(default=0)
-    nru = models.CharField(max_length=255)
-    room_status = models.CharField(max_length=1)
-
-
 class DiscountDetails(models.Model):
     discount_id = models.CharField(max_length=255, primary_key=True)
     hotel = models.ForeignKey(HotelDetails, to_field='hotel_id')
@@ -70,6 +54,24 @@ class BookingDetails(models.Model):
     discounted_price = models.DecimalField(max_digits=15, decimal_places=2)
     total_rooms = models.PositiveIntegerField(default=0)
     booking_date = models.CharField(max_length=15)
+
+
+class RoomDetails(models.Model):
+    ROOM_STATUS = (('V', 'Vacant'),
+                   ('D', 'Dirty'),
+                   ('O', 'Occupied'),
+                   ('B', 'Booked')
+                   )
+    booking = models.ForeignKey(BookingDetails, to_field='booking_id', null=True)
+    room_key = models.AutoField(primary_key=True)
+    room_no = models.PositiveIntegerField(null=True)
+    hotel = models.ForeignKey(HotelDetails, to_field='hotel_id')
+    guest = models.ForeignKey(GuestDetails, to_field='user_name')
+    room = models.ForeignKey(RoomPriceDetails, to_field='room_type')
+    layout = models.CharField(max_length=40)
+    floor_no = models.PositiveIntegerField(default=0)
+    nru = models.CharField(max_length=255)
+    room_status = models.CharField(max_length=1)
 
 
 class DiscountAvailed(models.Model):
