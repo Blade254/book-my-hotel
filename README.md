@@ -1,3 +1,3 @@
 # BookMyHotel
 
-A Practice Django app for Hotel Booking System.
+A Django-based web application for a simple hotel booking system.
